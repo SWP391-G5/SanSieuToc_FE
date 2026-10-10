@@ -1,8 +1,8 @@
 # SanSieuToc — Frontend
 
-> Sports Field Booking & Management Platform (SWP391 — FFMS)
+> Sports Field Booking & Management Platform (SWP391)
 
-The frontend client for **SanSieuToc** (Football/Sports Field Management System — FFMS), an academic full-stack web application designed for sports field booking, facility operations, and multi-role sports community management.
+The frontend client for **SanSieuToc**, a full-stack academic web application designed for sports field booking, facility operations, and multi-role sports community management.
 
 Companion Backend Repository: [SanSieuToc_BE](https://github.com/SWP391-G5/SanSieuToc_BE)
 
@@ -10,32 +10,35 @@ Companion Backend Repository: [SanSieuToc_BE](https://github.com/SWP391-G5/SanSi
 
 ## Overview
 
-SanSieuToc connects sports enthusiasts with field owners. The frontend provides specialized experiences for four distinct actors:
-- **Customers**: Browse venues, check slot availability, book fields, hire additional services, join community discussions, and top up personal wallets.
-- **Field Owners**: Manage field schedules, track bookings and service orders, analyze revenue, and process refunds.
-- **Managers**: Moderate platform posts and reviews, configure promotional banners, monitor business metrics across assigned owners, and maintain platform policies.
-- **Administrators**: Oversee user accounts, assign managers to owners, and view high-level platform audit reports.
+SanSieuToc connects sports enthusiasts with sports facility owners. The client application provides tailored interfaces for four user roles:
+- **Customers**: Browse sports venues, inspect real-time slot availability, reserve fields and add-on services, participate in community discussions, and manage a personal digital wallet.
+- **Field Owners**: Manage field information, operating schedules, booking orders, service requests, vouchers, and revenue analytics.
+- **Managers**: Moderate community posts and customer reviews, manage promotional banner resources, monitor business performance across assigned facility owners, and maintain platform privacy policies.
+- **Administrators**: Oversee platform accounts (managers, owners, customers), assign facility owners to managers, and review system reports.
 
 ---
 
 ## Key Features
 
-- **Dynamic Booking & Availability**: Real-time slot selection, service add-ons, and integrated checkout.
-- **Role-Based Workspaces**: Dedicated layouts and navigation for Customer, Owner, Manager, and Admin actors.
-- **Interactive Analytics**: Revenue and booking trend visualization powered by Recharts.
-- **Community & Content Management**: Post creation, image uploads via Cloudinary, and status-based moderation workflows.
-- **Wallet & Transactions**: Top-up flow, balance display, and transaction ledger.
+- **Venue Discovery & Booking**: Interactive field catalog with filtering, time-slot selection, service add-ons, and booking checkout.
+- **Role-Based Workspaces**: Dedicated layouts, navigation trees, and route guards for Customer, Owner, Manager, and Administrator workspaces.
+- **Analytics Visualization**: Interactive revenue and booking trend charts powered by Recharts.
+- **Community Moderation**: Content publishing, Cloudinary image upload workflows, and review moderation.
+- **Digital Wallet**: Balance tracking, top-up workflow, and transaction ledger.
 
 ---
 
 ## Technology Stack
 
-- **Core & Build Tooling**: React 19 (`19.2.3`), Vite 7 (`7.2.4`)
-- **Routing**: React Router DOM 7 (`7.12.0`)
-- **Styling**: TailwindCSS 4 (`4.1.18`), Lucide React, React Icons
-- **Data Management & API**: Axios (`1.13.2`) with request interceptors, TanStack React Query
-- **Data Visualization**: Recharts (`3.6.0`)
-- **Forms & Components**: React Hook Form, Headless UI, TanStack React Table, Swiper
+The client is built with the following libraries and tools (versions declared in `package.json`):
+
+- **Core Framework & Build Tool**: React (`^19.2.3`), Vite (`^7.2.4`)
+- **Routing**: React Router DOM (`^7.12.0`)
+- **Styling & Icons**: TailwindCSS (`^3.4.19`), PostCSS (`^8.5.6`), Autoprefixer (`^10.4.23`), Lucide React (`^0.562.0`), React Icons (`^5.5.0`)
+- **Data Fetching & State**: Axios (`^1.13.2`), TanStack React Query (`^5.99.2`), Redux Toolkit (`^2.11.2`)
+- **Data Visualization**: Recharts (`^3.8.1`)
+- **Forms & Tables**: React Hook Form (`^7.71.1`), Headless UI (`^2.2.9`), TanStack React Table (`^8.21.3`)
+- **UI Utilities**: Swiper (`^12.0.3`), React Modal (`^3.16.3`), Leaflet / React-Leaflet (`^5.0.0`), QR Code (`^4.2.0`), i18next (`^25.8.14`)
 
 ---
 
@@ -44,21 +47,21 @@ SanSieuToc connects sports enthusiasts with field owners. The frontend provides 
 ```text
 src/
 ├── assets/          # Static media and brand assets
-├── components/      # Shared UI elements and route guards
-│   ├── common/      # General UI components
-│   ├── manager/     # Manager guard (RequireManager)
-│   └── owner/       # Owner guard (RequireOwner)
-├── config/          # Central API endpoints configuration (api.config.js)
-├── context/         # AuthContext, NotificationContext, ThemeContext
+├── components/      # Shared UI elements and role-based route guards
+│   ├── common/      # General shared UI components
+│   ├── manager/     # Manager route guard (RequireManager)
+│   └── owner/       # Owner route guard (RequireOwner)
+├── config/          # Central API endpoints catalog (api.config.js)
+├── context/         # AuthContext, NotificationContext, ThemeContext, PreviewModeContext
 ├── layouts/         # Layout shells (MainLayout, ManagerLayout, OwnerLayout, AdminLayout)
 ├── pages/           # Screen modules grouped by user role
-│   ├── Customer/    # Field listings, booking, community, policy
+│   ├── Customer/    # Field listings, booking, community, reviews, policy
 │   ├── Manager/     # Analytics, post moderation, banners, feedback, wallet
-│   ├── owner/       # Field management, bookings, refunds, revenue
+│   ├── owner/       # Field management, bookings, refunds, revenue, vouchers
 │   ├── admin/       # Account administration and system reports
-│   ├── auth/        # Login, registration, password recovery
+│   ├── auth/        # Authentication, registration, password recovery
 │   └── Payment/     # Checkout and wallet top-up
-├── services/        # Axios client instance and domain API connectors
+├── services/        # Axios HTTP client instance and domain API connectors
 └── utils/           # Formatters, date helpers, and validation utilities
 ```
 
@@ -66,55 +69,71 @@ src/
 
 ## User Roles
 
-1. **Customer**: Public exploration, field reservations, community engagement, reviews, and wallet top-ups.
-2. **Owner**: Operations hub for sports facility owners to oversee bookings, field slots, and revenues.
-3. **Manager**: Content moderation, scoped business intelligence, banner scheduling, and policy enforcement.
-4. **Admin**: Platform-level user management and account authorization.
+1. **Customer**: Public exploration, venue booking, service reservations, community interaction, and wallet top-ups.
+2. **Owner**: Operational management of sports facilities, field slots, customer reservations, and revenue.
+3. **Manager**: Platform content moderation, scoped business intelligence, banner placements, and legal terms maintenance.
+4. **Administrator**: User account provisioning, role assignment, and platform-wide monitoring.
 
 ---
 
-## My Contribution — Manager Module
+## Team Contributions
 
-**Developer**: Phạm Quốc Minh (MinhPQ)  
+This application was developed as a collaborative academic project for the **SWP391** course by a team of five students. Work was partitioned across primary functional workflows:
+
+- **Phạm Quốc Minh (MinhPQ)**: Fullstack Developer — Manager Module (Revenue Analytics, Post Moderation, Banner Placements, Customer Review Moderation & Notices, Privacy Policies, Wallet & Withdrawals)
+- **Nguyễn Việt Đức (DucNV)**: Fullstack Developer — Owner Module (Field Operations, Add-on Services, Bookings & Slots, Vouchers, Owner Revenue Analytics)
+- **Nguyễn Viết Sang (SangNV)**: Fullstack Developer — Admin & Authentication Flow (Role-Based Access Control, Manager & Owner Account Provisioning, Customer Account Moderation, Authentication & User Profiles)
+- **Nguyễn Thành An (AnNVT)**: Fullstack Developer — Customer Booking & Payments Module (Wallet Management, Top-Up, Checkout, Add-on Services, Transactions & Refunds)
+- **Hoàng Thành Long (LongHT)**: Fullstack Developer — Customer Experience & Community Module (Home Page, Field Discovery & Filtering, Wishlist, Community Posts, Reviews & Feedback)
+
+*Note: Work assignments reflect course planning and module ownership across the team.*
+
+---
+
+## Manager Module — Technical Overview
+
+**Primary Contributor**: Phạm Quốc Minh  
 **Role**: Fullstack Developer — Manager Module
 
-I was responsible for the end-to-end full-stack implementation of the **Manager** actor workspace:
+The Manager actor serves as an operational supervisor between system administrators and field owners. The module implementation spans both the React frontend and Express/MongoDB backend:
 
-### Implemented Capabilities
+### Key Implemented Capabilities
 
-1. **Business Intelligence & Analytics (`ManagerStatisticsPage.jsx`)**:
-   - Orchestrated KPI cards displaying total orders, slots reserved, gross revenue, refund deductions, and net revenue.
-   - Built interactive Line and Bar charts using **Recharts** with day/week/month aggregation and time-range presets (Today, Last 7 Days, This Month, This Year).
-   - Implemented an **Owner Scoping Selector**, allowing managers to filter analytics across their specifically assigned facility owners.
-   - Designed a "Hot Fields" ranking view and field detail inspection modal.
+1. **Scoped Business Intelligence & Analytics (`ManagerStatisticsPage.jsx`)**:
+   - Aggregates KPIs across orders, reserved court slots, gross revenue, refunds, and net revenue.
+   - Interactive trend visualization with Recharts (Line and Bar charts) supporting daily, weekly, and monthly time-grain groupings.
+   - Presets for rapid filtering (Today, Last 7 Days, This Month, This Year).
+   - Scoped Owner Selector: filters analytics to only the facility owners specifically assigned to the active manager.
+   - "Hot Fields" ranking displaying top-utilized courts with detail preview modals.
 
 2. **Community & Post Moderation (`ManagerPostsPage.jsx`)**:
-   - Developed moderation workflows (Approve, Reject, Delete) for posts submitted by community members and field owners.
-   - Implemented manager-authored post creation with multi-image Cloudinary uploads (up to 6 images) and tagging.
-   - Built a local storage and database draft persistence mechanism (`status: 'Draft'`).
+   - Review workflows (Approve, Reject, Delete) for posts submitted by community members and field owners.
+   - Scoped moderation: verifies that an owner post belongs to an owner within the manager's assigned scope before approving.
+   - Manager announcement creation supporting up to 6 image uploads via Cloudinary and topical tags.
+   - Database-backed draft persistence via API (`status: 'Draft'`). Deprecated client-only draft storage shims are retained for backward compatibility.
 
 3. **Banner & Marketing Placements (`BannersAdsPage.jsx`)**:
-   - Built the management interface for homepage hero banners and sliders (`MarketingResource`).
-   - Implemented placement selection, active toggle controls, and duplicate order sequence validation.
+   - Management interface for promotional banners and sliders (`MarketingResource`).
+   - Placement selection, active status toggle, and duplicate sequence order validation.
 
 4. **Customer Feedback Moderation (`ManagerFeedbackPage.jsx`)**:
-   - Designed an aggregated feedback monitoring table across all fields in the manager's scope.
-   - Implemented a reason-based soft-deletion workflow, triggering an automated email notification to the reviewer.
-   - Provided audit inspection of deleted reviews with instant restoration capabilities.
+   - Moderation table showing customer reviews across fields in the manager's assigned scope.
+   - Soft-deletion requiring a documented violation reason, triggering an automated email notification to the reviewer.
+   - Audit view of removed reviews with restoration support.
 
 5. **Platform Privacy Policies (`ManagerPrivacyPage.jsx`)**:
-   - Developed an accordion-based CRUD management interface for public legal and privacy terms.
+   - Accordion-style CRUD interface for system privacy and policy documents.
 
-6. **Manager Wallet & Payouts (`ManagerWalletPage.jsx`, `ManagerWithdrawPage.jsx`)**:
-   - Implemented balance tracking, transaction history tables, and bank withdrawal requests with strict account format validation.
+6. **Manager Wallet & Withdrawals (`ManagerWalletPage.jsx`, `ManagerWithdrawPage.jsx`)**:
+   - Digital balance viewing, transaction history ledger, and bank withdrawal requests with account format validation.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher recommended)
-- npm or yarn
+- **Node.js**: Compatible with Vite 7 engines (`^18.0.0 || ^20.0.0 || >=22.0.0`). Node.js LTS (20.x or 22.x) is recommended.
+- **npm** (v9+) or **yarn**
 
 ### Installation & Local Setup
 
@@ -129,27 +148,25 @@ I was responsible for the end-to-end full-stack implementation of the **Manager*
    npm install
    ```
 
-3. Create environment configuration file:
-   Copy `.env.example` to `.env`:
+3. Configure environment:
+   Create a `.env` file based on `.env.example`:
    ```bash
    cp .env.example .env
    ```
-   Or create `.env` manually:
+   Default configuration:
    ```env
+   # Backend API Base URL
    VITE_API_URL=http://localhost:9999
 
-   # Quick UI Evaluation / Preview Mode:
-   # Set to true to bypass manager route guard during local layout development
-   VITE_BYPASS_MANAGER_AUTH=true
+   # Local Development UI Preview Flag (optional)
+   VITE_BYPASS_MANAGER_AUTH=false
    ```
-
-   > **Note on Evaluation / Offline DB**: Since cloud database instances from the academic semester are now offline, set `VITE_BYPASS_MANAGER_AUTH=true` to navigate and evaluate the Manager UI screens (`/manager/statistics`, `/manager/posts`, etc.) without requiring an active backend or authentication session.
 
 4. Launch development server:
    ```bash
    npm run dev
    ```
-   The application will start at `http://localhost:5173`.
+   The client will be accessible at `http://localhost:5173`.
 
 5. Build for production:
    ```bash
@@ -158,34 +175,32 @@ I was responsible for the end-to-end full-stack implementation of the **Manager*
 
 ---
 
+## Development Configuration
+
+### API Routing & Proxy
+- **Axios HTTP Client**: Requests configured through `src/services/axios.js` use `import.meta.env.VITE_API_URL` (defaulting to local `http://localhost:9999`).
+- **Development Server Proxy**: In `vite.config.js`, the Vite dev server forwards `/api` requests to `VITE_API_URL` or `http://localhost:9999`. This ensures components using relative `fetch('/api/...')` routes seamlessly reach the local backend.
+
+### Manager UI Preview Mode
+- Setting `VITE_BYPASS_MANAGER_AUTH=true` allows developers to bypass the client-side `RequireManager` route guard during UI layout work.
+- **Important Limitations**:
+  - The bypass is strictly gated to local development (`import.meta.env.DEV`) and is automatically inactive in production builds.
+  - It bypasses only the frontend route guard; it does **not** create a backend session or bypass backend JWT verification.
+  - Endpoints requiring authentication will return `401 Unauthorized` without a running backend and valid user session.
+
+---
+
 ## Backend Integration
 
-The frontend communicates with the backend via a centralized Axios instance (`src/services/axios.js`) configured with:
-- Bearer token authentication automatically attached from `localStorage` (`sst_auth`).
-- Central endpoint catalog defined in `src/config/api.config.js`.
-- Error normalization for structured server responses.
+The client application integrates with the companion backend service:
+- Bearer tokens are stored in `localStorage` (`sst_auth`) and attached via Axios request interceptors.
+- Centralized endpoint constants are cataloged in `src/config/api.config.js`.
 
 ---
 
-## Team Contributions
+## Academic Documentation Notice
 
-This project was developed for the **SWP391** academic course by **Group 5 (5 members)**. The official responsibilities as documented in the course scope matrix (`Docs/Scope.xlsx` & `ProjectTracking`):
-
-- **Phạm Quốc Minh (MinhPQ)**: Fullstack Developer — Manager Module (Revenue Analytics, Post Moderation, Banner/Ads, Customer Feedback Moderation & Notice, Privacy Policy, Wallet & Withdrawals)
-- **Nguyễn Việt Đức (DucNV)**: Fullstack Developer — Owner Module (Field Operations, Field Services, Bookings & Slots, Vouchers, Owner Revenue Analytics)
-- **Nguyễn Viết Sang (SangNV)**: Fullstack Developer — Admin & Authentication Flow (System RBAC, Manager & Owner Account Provisioning, Customer Account Moderation, Auth & Security, User Profiles)
-- **Nguyễn Thành An (AnNVT)**: Fullstack Developer — Customer Booking & Payment Module (Wallet Operations & Top-Up, Checkout & Booking Confirmation, Service Add-ons, Transactions & Refunds)
-- **Hoàng Thành Long (LongHT)**: Fullstack Developer — Customer Experience & Community Module (Home Page, Field Discovery & Filtering, Wishlist, Community Posts, Reviews & Feedback)
-
----
-
-## Academic Project Documentation
-
-Original academic project specifications, architecture documents, and diagrams are stored in the project repository's `Docs/` directory:
-- **Software Design Specification (SDS)**: `Docs/SWP391_G5-FFMS_SDS Document.docx`
-- **Requirements Specification (RDS)**: `Docs/SWP391_G5-FFMS_RDS Document.docx`
-- **Architecture & System Diagrams**: `Docs/Diagrams` (Draw.io format: ERD, use cases, sequence diagrams)
-- **Project Scope Matrix**: `Docs/Scope.xlsx` & `Docs/SWP391_G5-FFMS_ProjectTracking_v1.0.xlsx`
+Course-level specifications (Software Design Specification — SDS, Requirements Document — RDS, and Draw.io system diagrams) were authored during the SWP391 semester and are retained in private project archives. They are not bundled inside this public client repository.
 
 ---
 

@@ -8,9 +8,10 @@
 
 import { Navigate } from 'react-router-dom';
 
-import { useAuth } from '../../context/AuthContext';
+// Dev-only bypass:
+// - Restricts route guard bypass strictly to local development (import.meta.env.DEV)
+const BYPASS = Boolean(import.meta.env.DEV) && String(import.meta.env.VITE_BYPASS_MANAGER_AUTH || '').toLowerCase() === 'true';
 
-const BYPASS = String(import.meta.env.VITE_BYPASS_MANAGER_AUTH || '').toLowerCase() === 'true';
 
 /**
  * isAdminGroup
